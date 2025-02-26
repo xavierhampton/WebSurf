@@ -57,11 +57,22 @@ const cubeMaterial = new THREE.MeshLambertMaterial({
     color: 0x5c646b
 });
 
-const cube = new THREE.Mesh(geometry, cubeMaterial);
-cube.position.y = 1
-cube.castShadow = true
-cube.receiveShadow = true
-scene.add(cube);
+
+//Cube Generator
+for (let i = 0; i < 100; i++) {
+    const cube = new THREE.Mesh(geometry, cubeMaterial);
+
+    let xPos = Math.random() * 100 - 50
+    let zPos = Math.random() * 100 - 50
+
+    cube.position.x = xPos
+    cube.position.z = zPos
+    cube.position.y = 1
+
+    cube.castShadow = true
+    cube.receiveShadow = true
+    scene.add(cube);
+}
 
 function animate() {
     requestAnimationFrame(animate);
