@@ -1,8 +1,10 @@
 import * as THREE from 'three';
-import Stats from 'three/examples/jsm/libs/stats.module';
-import { GUI } from 'dat.gui';
+import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls'
+import * as CANNON from 'cannon-es'
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x5aa0e5)
 
 const camera = new THREE.PerspectiveCamera(
     75,
@@ -10,11 +12,7 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000
 )
-camera.position.z = 5;
-
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+camera.position.set(0,2,5)
 
 window.addEventListener('resize', onWindowResize, false);
 function onWindowResize() {
@@ -24,59 +22,52 @@ function onWindowResize() {
     render();
 }
 
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true
+document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement)
+
+// Lighting
+const light = new THREE.DirectionalLight(0xffffff, Math.PI)
+light.position.x = 25
+light.position.y = 25
+light.castShadow = true
+light.shadow.camera.scale.x = light.shadow.camera.scale.y = 10
+
+const ambLight = new THREE.AmbientLight(0xffffff, .5)
+
+
+//How pixelated shadows are smaller = more
+light.shadow.mapSize.width = light.shadow.mapSize.height = 1024
+scene.add(light, ambLight)
+
+//Plane
+const planeMesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(100,100,50,50),
+    new THREE.MeshLambertMaterial()
+)
+planeMesh.rotateX(-Math.PI / 2)
+planeMesh.receiveShadow = true
+scene.add(planeMesh)
+
 const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({
-    color: 0x53c4f5
+const cubeMaterial = new THREE.MeshLambertMaterial({
+    color: 0x5c646b
 });
 
-const cube = new THREE.Mesh(geometry, material);
+const cube = new THREE.Mesh(geometry, cubeMaterial);
+cube.position.y = 1
+cube.castShadow = true
+cube.receiveShadow = true
 scene.add(cube);
-
-
-const stats = new Stats();
-document.body.appendChild(stats.dom);
-
-
-const gui = new GUI();
-
-const cubeFolder = gui.addFolder('Cube');
-const rotationFolder = cubeFolder.addFolder('Rotation');
-rotationFolder.add(cube.rotation, 'x', 0, Math.PI * 2);
-rotationFolder.add(cube.rotation, 'y', 0, Math.PI * 2);
-rotationFolder.add(cube.rotation, 'z', 0, Math.PI * 2);
-rotationFolder.open();
-
-const scaleRotation = cubeFolder.addFolder('Scale');
-scaleRotation.add(cube.scale, 'x', 0, 5);
-scaleRotation.add(cube.scale, 'y', 0, 5);
-scaleRotation.add(cube.scale, 'z', 0, 5);
-scaleRotation.open();
-
-var cubeData = {
-    color: cube.material.color.getHex()
-}
-
-cubeFolder.addColor(cubeData, 'color').onChange(()=> {
-    cube.material.color.setHex(Number(cubeData.color))
-})
-
-cubeFolder.add(cube.material, 'wireframe');
-
-cubeFolder.open();
-
-const cameraFolder = gui.addFolder('Camera');
-cameraFolder.add(camera.position, 'z', 0, 10);
-cameraFolder.open();
-
 
 function animate() {
     requestAnimationFrame(animate);
 
-    // cube.rotation.x += 0.01;
-    // cube.rotation.y += 0.01;
 
-    stats.update();
-
+    controls.update()
     render();
 }
 
