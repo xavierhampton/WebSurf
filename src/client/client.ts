@@ -2,8 +2,14 @@ import * as THREE from 'three';
 import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls'
 import * as CANNON from 'cannon-es'
 
+const spaceTexture = new THREE.TextureLoader().load('assets/spaceTexture.png')
+spaceTexture.wrapS = THREE.RepeatWrapping
+spaceTexture.wrapT = THREE.RepeatWrapping
+spaceTexture.repeat.set(2,2)
+
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x5aa0e5)
+scene.background = spaceTexture
+
 
 const camera = new THREE.PerspectiveCamera(
     75,
