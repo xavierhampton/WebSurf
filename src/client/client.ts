@@ -13,6 +13,9 @@ const camera = new THREE.PerspectiveCamera(
 )
 camera.position.set(0,2,5)
 
+//Mesh List
+let meshes : any = []
+
 window.addEventListener('resize', onWindowResize, false);
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -65,6 +68,7 @@ const planeMesh = new THREE.Mesh(
 )
 planeMesh.rotateX(-Math.PI / 2)
 planeMesh.receiveShadow = true
+meshes.push(planeMesh)
 scene.add(planeMesh)
 
 const planeShape = new CANNON.Plane()
@@ -88,6 +92,7 @@ for (let i = 0; i < 100; i++) {
     );
 
     const cube = new THREE.Mesh(geometry, cubeMaterial);
+    meshes.push(cube)
 
     let xPos = Math.random() * 100 - 50
     let zPos = Math.random() * 100 - 50
@@ -145,6 +150,25 @@ let moveBackward = false;
 let moveLeft = false;
 let moveRight = false;
 let jumping = false;
+let isGrounded = false;
+
+function checkGrounded() {
+    // Ray starts from the sphere's current position
+    const rayStart = new THREE.Vector3(playerBody.position.x, playerBody.position.y, playerBody.position.z);
+    
+    // Ray is cast downwards
+    const rayDirection = new THREE.Vector3(0, -1, 0); // Negative Y direction
+    
+    // Create a Raycaster for Three.js
+    const raycaster = new THREE.Raycaster(rayStart, rayDirection, 0, 2); // Maximum distance of 2 units
+    
+    // Check if the ray hits something
+    const intersects = raycaster.intersectObjects(meshes)
+    
+    // If the ray hits the ground, we consider the object as grounded
+    isGrounded = (intersects.length > 0) ? true : false
+  }
+
 
 const onKeyDown = (event: KeyboardEvent) => {
     switch(event.code) {
@@ -170,6 +194,7 @@ document.addEventListener('keydown', onKeyDown, false)
 document.addEventListener('keyup', onKeyUp, false)
 
 function move() {
+    checkGrounded()
     if (moveLeft) {
         controls.moveRight(-0.1)
     }
@@ -183,7 +208,7 @@ function move() {
         controls.moveForward(-0.1)
     }
 
-    if (jumping) {
+    if (jumping && isGrounded) {
         playerBody.velocity.set(0,7,0)
         jumping = false;
     }
