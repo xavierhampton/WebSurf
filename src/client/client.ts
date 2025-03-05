@@ -83,11 +83,10 @@ planeBody.addShape(planeShape)
 planeBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), -Math.PI / 2)
 world.addBody(planeBody)
 
-
+const cubeTexture = new THREE.TextureLoader().load('./assets/cookieTexture.png')
 const cubeMaterial = new THREE.MeshLambertMaterial({
-    color: 0x5c646b
+    map: cubeTexture
 });
-
 
 //Cube Generator
 for (let i = 0; i < 100; i++) {
@@ -98,6 +97,7 @@ for (let i = 0; i < 100; i++) {
     );
 
     const cube = new THREE.Mesh(geometry, cubeMaterial);
+    
     meshes.push(cube)
 
     let xPos = Math.random() * 100 - 50
