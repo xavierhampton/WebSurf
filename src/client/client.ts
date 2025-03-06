@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls'
 import * as CANNON from 'cannon-es'
+import pMove from './components/pMove';
 
 const spaceTexture = new THREE.TextureLoader().load('assets/spaceTexture.png')
 spaceTexture.wrapS = THREE.RepeatWrapping
