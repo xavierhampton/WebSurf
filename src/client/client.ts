@@ -3,6 +3,8 @@ import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockContro
 import * as CANNON from 'cannon-es'
 import pMove from './components/pMove';
 
+const pmove = new pMove()
+
 const spaceTexture = new THREE.TextureLoader().load('assets/spaceTexture.png')
 spaceTexture.wrapS = THREE.RepeatWrapping
 spaceTexture.wrapT = THREE.RepeatWrapping
@@ -68,6 +70,7 @@ const world = new CANNON.World();
 world.gravity.set(0, -9.82, 0);
 const clock = new THREE.Clock()
 
+
 //Plane
 const planeMesh = new THREE.Mesh(
     new THREE.PlaneGeometry(100,100,50,50),
@@ -79,7 +82,7 @@ meshes.push(planeMesh)
 scene.add(planeMesh)
 
 const planeShape = new CANNON.Plane()
-const planeBody = new CANNON.Body({mass: 0})
+const planeBody = new CANNON.Body({mass: 0, material: new CANNON.Material({friction: 0})})
 planeBody.addShape(planeShape)
 planeBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), -Math.PI / 2)
 world.addBody(planeBody)
@@ -122,7 +125,7 @@ for (let i = 0; i < 100; i++) {
     const size = new THREE.Vector3()
     cube.geometry.boundingBox?.getSize(size)
     const cubeShape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2))
-    const cubeBody = new CANNON.Body({mass: 0})
+    const cubeBody = new CANNON.Body({mass: 0, material: new CANNON.Material({friction: 0})})
     cubeBody.addShape(cubeShape)
 
     cubeBody.position.x = cube.position.x
@@ -141,7 +144,7 @@ player.castShadow = true
 scene.add(player)
 
 const playerShape = new CANNON.Box(new CANNON.Vec3(0.5, 1.5, 0.5))
-const playerBody = new CANNON.Body({mass: 3})
+const playerBody = new CANNON.Body({mass: 12, material: new CANNON.Material({friction: 0})})
 playerBody.addShape(playerShape)
 playerBody.position.set(
     player.position.x,
@@ -200,25 +203,53 @@ const onKeyUp = (event: KeyboardEvent) => {
 document.addEventListener('keydown', onKeyDown, false)
 document.addEventListener('keyup', onKeyUp, false)
 
+
+
 function move() {
     checkGrounded()
+
+    const lookVector: THREE.Vector3 = controls.getDirection(new THREE.Vector3(0,0,0)).clone()
+    const wishDir = new THREE.Vector3(0,0,0)
+
     if (moveLeft) {
-        controls.moveRight(-0.1)
+        wishDir.add((new THREE.Vector3(0,1,0).cross(lookVector)))
     }
     if (moveRight) {
-        controls.moveRight(0.1)
+        wishDir.add((lookVector.clone().cross(new THREE.Vector3(0,1,0))))
     }
     if (moveForward) {
-        controls.moveForward(0.1)
+        wishDir.add(new THREE.Vector3(lookVector.x,0,lookVector.z))
     }
     if (moveBackward) {
-        controls.moveForward(-0.1)
+        wishDir.add(new THREE.Vector3(-lookVector.x,0,-lookVector.z))
     }
+    wishDir.y = 0
+    wishDir.normalize()
 
+        playerBody.velocity.x = wishDir.x * 10
+        playerBody.velocity.z = wishDir.z * 10
+
+   
+    //    let velocity: THREE.Vector3 = new THREE.Vector3(playerBody.velocity.x, 0, playerBody.velocity.z)
+    //    let newVelo = pmove.MoveAir(wishDir.clone(), velocity, clock.getDelta())
+    //    playerBody.velocity.set(newVelo.x, playerBody.velocity.y, newVelo.z)
+
+    
+
+    // console.log(wishDir)
+
+    //  let velocity: THREE.Vector3 = new THREE.Vector3(playerBody.velocity.x, 0, playerBody.velocity.z)
+    //  let newVelo: THREE.Vector3 = pmove.MoveGround(wishDir.clone(), velocity.clone(), clock.getDelta())
+    //  console.log(newVelo)
+
+  
     if (jumping && isGrounded) {
-        playerBody.velocity.set(0,7,0)
+        playerBody.velocity.y = 7
         jumping = false;
     }
+
+
+        
 
     playerBody.position.set(
         camera.position.x,
@@ -231,8 +262,7 @@ function move() {
 
 function animate() {
     requestAnimationFrame(animate);
-
-
+    
     move()
     world.step(Math.min(clock.getDelta(), 0.1))
 
