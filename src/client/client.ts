@@ -2,8 +2,11 @@ import * as THREE from 'three';
 import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls'
 import * as CANNON from 'cannon-es'
 import pMove from './components/pMove';
+import Stats from 'three/examples/jsm/libs/stats.module';
 
+const stats = new Stats()
 const pmove = new pMove()
+document.body.appendChild(stats.dom)
 
 const spaceTexture = new THREE.TextureLoader().load('assets/spaceTexture.png')
 spaceTexture.wrapS = THREE.RepeatWrapping
@@ -226,13 +229,14 @@ function move() {
     wishDir.y = 0
     wishDir.normalize()
 
-        playerBody.velocity.x = wishDir.x * 10
-        playerBody.velocity.z = wishDir.z * 10
+    // playerBody.velocity.x = wishDir.x * 10
+    // playerBody.velocity.z = wishDir.z * 10
 
    
-    //    let velocity: THREE.Vector3 = new THREE.Vector3(playerBody.velocity.x, 0, playerBody.velocity.z)
-    //    let newVelo = pmove.MoveAir(wishDir.clone(), velocity, clock.getDelta())
-    //    playerBody.velocity.set(newVelo.x, playerBody.velocity.y, newVelo.z)
+       let velocity: THREE.Vector3 = new THREE.Vector3(playerBody.velocity.x, 0, playerBody.velocity.z)
+       let newVelo = pmove.MoveGround(wishDir.clone(), velocity, clock.getDelta())
+       playerBody.velocity.x = newVelo.x
+       playerBody.velocity.z = newVelo.z
 
     
 
@@ -248,6 +252,10 @@ function move() {
         jumping = false;
     }
 
+    // if (!isGrounded) {
+    //     playerBody.velocity.y = Math.max(playerBody.velocity.y - 9.82 * clock.getDelta(), -10)
+    // }
+
 
         
 
@@ -262,6 +270,7 @@ function move() {
 
 function animate() {
     requestAnimationFrame(animate);
+    stats.update()
     
     move()
     world.step(Math.min(clock.getDelta(), 0.1))

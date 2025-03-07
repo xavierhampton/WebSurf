@@ -15,12 +15,14 @@ class pMove {
     }
 
     MoveGround(wishDir: Vector3, velocity: Vector3, delta: number) {
-        // velo.add(velo.multiplyScalar( -1 * this.friction * clock.getDelta() ))
+
         let velo = velocity.clone()
+        velo = velo.multiplyScalar(this.friction)
 
         let current_speed = velo.dot(wishDir)
         let add_speed = this.clamp(this.maxGroundSpeed - current_speed, 0, this.maxAcceleration )
         velo.add(wishDir.multiplyScalar(add_speed))
+        console.log(velo)
         return velo
     }
 
