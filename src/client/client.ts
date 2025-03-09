@@ -240,8 +240,6 @@ function move(delta: number) {
        playerBody.velocity.x = velocity.x
        playerBody.velocity.z = velocity.z
 
-    console.log(playerBody.velocity)
-
   
     if (jumping && isGrounded) {
         playerBody.velocity.y = 7
