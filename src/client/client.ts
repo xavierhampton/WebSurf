@@ -208,7 +208,7 @@ document.addEventListener('keyup', onKeyUp, false)
 
 
 
-function move() {
+function move(delta: number) {
     checkGrounded()
 
     const lookVector: THREE.Vector3 = controls.getDirection(new THREE.Vector3(0,0,0)).clone()
@@ -229,35 +229,24 @@ function move() {
     wishDir.y = 0
     wishDir.normalize()
 
-    // playerBody.velocity.x = wishDir.x * 10
-    // playerBody.velocity.z = wishDir.z * 10
-
-   
        let velocity: THREE.Vector3 = new THREE.Vector3(playerBody.velocity.x, 0, playerBody.velocity.z)
-       let newVelo = pmove.MoveGround(wishDir.clone(), velocity, clock.getDelta())
-       playerBody.velocity.x = newVelo.x
-       playerBody.velocity.z = newVelo.z
 
-    
+       if (isGrounded) {
+        velocity = pmove.MoveGround(wishDir.clone(), velocity, delta)
+       } else {
+        velocity = pmove.MoveAir(wishDir.clone(), velocity, delta)
+       }
 
-    // console.log(wishDir)
+       playerBody.velocity.x = velocity.x
+       playerBody.velocity.z = velocity.z
 
-    //  let velocity: THREE.Vector3 = new THREE.Vector3(playerBody.velocity.x, 0, playerBody.velocity.z)
-    //  let newVelo: THREE.Vector3 = pmove.MoveGround(wishDir.clone(), velocity.clone(), clock.getDelta())
-    //  console.log(newVelo)
+    console.log(playerBody.velocity)
 
   
     if (jumping && isGrounded) {
         playerBody.velocity.y = 7
         jumping = false;
     }
-
-    // if (!isGrounded) {
-    //     playerBody.velocity.y = Math.max(playerBody.velocity.y - 9.82 * clock.getDelta(), -10)
-    // }
-
-
-        
 
     playerBody.position.set(
         camera.position.x,
@@ -267,13 +256,13 @@ function move() {
 }
 
 
-
 function animate() {
+    let delta = clock.getDelta()
     requestAnimationFrame(animate);
     stats.update()
     
-    move()
-    world.step(Math.min(clock.getDelta(), 0.1))
+    move(delta)
+    world.step(Math.min(delta, 0.1))
 
 
     player.position.set(

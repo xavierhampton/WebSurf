@@ -7,17 +7,17 @@ class pMove {
     friction: number
 
     constructor() {
-        this.maxGroundSpeed = 320
-        this.maxAirSpeed = 300
+        this.maxGroundSpeed = 20
+        this.maxAirSpeed = 15
         this.maxAcceleration = 10 * this.maxGroundSpeed
-        this.friction = 0.8
+        this.friction = 0.1
 
     }
 
     MoveGround(wishDir: Vector3, velocity: Vector3, delta: number) {
 
         let velo = velocity.clone()
-        velo = velo.multiplyScalar(this.friction)
+        velo = velo.multiplyScalar(this.friction * delta)
 
         let current_speed = velo.dot(wishDir)
         let add_speed = this.clamp(this.maxGroundSpeed - current_speed, 0, this.maxAcceleration )
