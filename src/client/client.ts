@@ -41,6 +41,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true
 document.body.appendChild(renderer.domElement);
 const controls = new PointerLockControls(camera, renderer.domElement)
+controls.pointerSpeed = 0.5
+
 const menuPanel = document.getElementById("menuPanel") as HTMLDivElement
 const startButton = document.getElementById("startButton") as HTMLInputElement
 startButton.addEventListener('click', () => {
@@ -89,6 +91,8 @@ const planeBody = new CANNON.Body({mass: 0, material: new CANNON.Material({frict
 planeBody.addShape(planeShape)
 planeBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), -Math.PI / 2)
 world.addBody(planeBody)
+
+
 
 const cubeTexture = new THREE.TextureLoader().load('./assets/cookieTexture.png')
 const cubeMaterial = new THREE.MeshLambertMaterial({
