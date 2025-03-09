@@ -239,7 +239,15 @@ function move(delta: number) {
        if (isGrounded) {
         velocity = pmove.MoveGround(wishDir.clone(), velocity, delta)
        } else {
-        velocity = pmove.MoveAir(wishDir.clone(), velocity, delta)
+
+        if ((!moveForward && !moveBackward)) {
+            velocity = pmove.MoveAir(wishDir.clone(), velocity, delta, true)
+        } else {
+            velocity = pmove.MoveAir(wishDir.clone(), velocity, delta, false)
+        }
+
+
+        velocity = pmove.MoveAir(wishDir.clone(), velocity, delta, true)
        }
 
        playerBody.velocity.x = velocity.x

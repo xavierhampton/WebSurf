@@ -8,10 +8,10 @@ class pMove {
     airFrictionCoefficient: number
 
     constructor() {
-        this.maxGroundSpeed = 120
+        this.maxGroundSpeed = 80
         this.maxAirSpeed = 20
         this.maxAcceleration = 10 * this.maxGroundSpeed
-        this.frictionCoefficient = 10
+        this.frictionCoefficient = 5
         this.airFrictionCoefficient = 0
     }
 
@@ -26,14 +26,17 @@ class pMove {
         return velo
     }
 
-    MoveAir(wishDir: Vector3, velocity: Vector3, delta: number) {
+    MoveAir(wishDir: Vector3, velocity: Vector3, delta: number, strafe: boolean) {
         let velo = velocity.clone()
         this.friction(velo, delta, this.airFrictionCoefficient)
 
         let current_speed = velo.dot(wishDir)
-        let add_speed = this.clamp(this.maxAirSpeed - current_speed, 0, this.maxAcceleration )
-        add_speed *= delta
-        velo.add(wishDir.multiplyScalar(add_speed))
+        if (strafe) {
+            let add_speed = this.clamp(this.maxAirSpeed - current_speed, 0, this.maxAcceleration )
+            add_speed *= delta
+            velo.add(wishDir.multiplyScalar(add_speed))
+        }
+        
         return velo
     }
 
