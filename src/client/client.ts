@@ -70,7 +70,7 @@ scene.add(light, ambLight)
 //Physics
 
 const world = new CANNON.World();
-world.gravity.set(0, -9.82, 0);
+world.gravity.set(0, -20, 0);
 const clock = new THREE.Clock()
 
 
@@ -229,6 +229,11 @@ function move(delta: number) {
     wishDir.y = 0
     wishDir.normalize()
 
+    if (jumping && isGrounded) {
+        playerBody.velocity.y = 7
+        isGrounded = false;
+    }
+
        let velocity: THREE.Vector3 = new THREE.Vector3(playerBody.velocity.x, 0, playerBody.velocity.z)
 
        if (isGrounded) {
@@ -241,10 +246,7 @@ function move(delta: number) {
        playerBody.velocity.z = velocity.z
 
   
-    if (jumping && isGrounded) {
-        playerBody.velocity.y = 7
-        jumping = false;
-    }
+   
 
     playerBody.position.set(
         camera.position.x,
