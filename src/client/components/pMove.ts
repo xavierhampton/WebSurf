@@ -9,9 +9,9 @@ class pMove {
 
     constructor() {
         this.maxGroundSpeed = 80
-        this.maxAirSpeed = 20
-        this.maxAcceleration = 10 * this.maxGroundSpeed
-        this.frictionCoefficient = 5
+        this.maxAirSpeed = 10
+        this.maxAcceleration = 5 * this.maxGroundSpeed
+        this.frictionCoefficient = 10
         this.airFrictionCoefficient = 0
     }
 
