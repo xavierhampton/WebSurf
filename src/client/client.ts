@@ -114,54 +114,54 @@ planeBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), -Math.PI / 2)
 world.addBody(planeBody)
 
 
-const cubeTexture = new THREE.TextureLoader().load('./assets/cookieTexture.png')
-const cubeMaterial = new THREE.MeshLambertMaterial({
-    map: cubeTexture
-});
+// const cubeTexture = new THREE.TextureLoader().load('./assets/cookieTexture.png')
+// const cubeMaterial = new THREE.MeshLambertMaterial({
+//     map: cubeTexture
+// });
 
-//Cube Generator
-for (let i = 0; i < 100; i++) {
-    const geometry = new THREE.BoxGeometry(
-        Math.max(Math.random() * 10, 1),
-        Math.max(Math.random() * 5, 1),
-        Math.max(Math.random() * 10, 1),
-    );
+//Cube Generator 
+// for (let i = 0; i < 100; i++) {
+//     const geometry = new THREE.BoxGeometry(
+//         Math.max(Math.random() * 10, 1),
+//         Math.max(Math.random() * 5, 1),
+//         Math.max(Math.random() * 10, 1),
+//     );
 
-    const cube = new THREE.Mesh(geometry, cubeMaterial);
+//     const cube = new THREE.Mesh(geometry, cubeMaterial);
     
-    meshes.push(cube)
+//     meshes.push(cube)
 
-    let xPos = Math.random() * 100 - 50
-    let zPos = Math.random() * 100 - 50
+//     let xPos = Math.random() * 100 - 50
+//     let zPos = Math.random() * 100 - 50
 
-    if (xPos < 10 && xPos > -10 && zPos < 10 && zPos > -10) {
-        if (Math.random() * .5) {xPos += (xPos > 0) ? 10: -10}
-        else {zPos += (zPos > 0) ? 10 : -10}
-    }
+//     if (xPos < 10 && xPos > -10 && zPos < 10 && zPos > -10) {
+//         if (Math.random() * .5) {xPos += (xPos > 0) ? 10: -10}
+//         else {zPos += (zPos > 0) ? 10 : -10}
+//     }
 
-    cube.position.x = xPos
-    cube.position.z = zPos
+//     cube.position.x = xPos
+//     cube.position.z = zPos
 
-    cube.geometry.computeBoundingBox()
+//     cube.geometry.computeBoundingBox()
 
-    cube.position.y =  ((cube.geometry.boundingBox as THREE.Box3).max.y - (cube.geometry.boundingBox as THREE.Box3).min.y) / 2
-    cube.castShadow = true
-    cube.receiveShadow = true
-    scene.add(cube);
+//     cube.position.y =  ((cube.geometry.boundingBox as THREE.Box3).max.y - (cube.geometry.boundingBox as THREE.Box3).min.y) / 2
+//     cube.castShadow = true
+//     cube.receiveShadow = true
+//     scene.add(cube);
 
-    const size = new THREE.Vector3()
-    cube.geometry.boundingBox?.getSize(size)
-    const cubeShape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2))
-    const cubeBody = new CANNON.Body({mass: 0, material: new CANNON.Material({friction: 0})})
-    cubeBody.addShape(cubeShape)
+//     const size = new THREE.Vector3()
+//     cube.geometry.boundingBox?.getSize(size)
+//     const cubeShape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2))
+//     const cubeBody = new CANNON.Body({mass: 0, material: new CANNON.Material({friction: 0})})
+//     cubeBody.addShape(cubeShape)
 
-    cubeBody.position.x = cube.position.x
-    cubeBody.position.y = cube.position.y
-    cubeBody.position.z = cube.position.z
+//     cubeBody.position.x = cube.position.x
+//     cubeBody.position.y = cube.position.y
+//     cubeBody.position.z = cube.position.z
     
 
-    world.addBody(cubeBody)
-}
+//     world.addBody(cubeBody)
+// }
 
 
 
@@ -173,22 +173,6 @@ let moveRight = false;
 let jumping = false;
 let isGrounded = false;
 
-function checkGrounded() {
-    // Ray starts from the sphere's current position
-    const rayStart = new THREE.Vector3(playerBody.position.x, playerBody.position.y, playerBody.position.z);
-    
-    // Ray is cast downwards
-    const rayDirection = new THREE.Vector3(0, -1, 0); // Negative Y direction
-    
-    // Create a Raycaster for Three.js
-    const raycaster = new THREE.Raycaster(rayStart, rayDirection, 0, 2); // Maximum distance of 2 units
-    
-    // Check if the ray hits something
-    const intersects = raycaster.intersectObjects(meshes)
-    
-    // If the ray hits the ground, we consider the object as grounded
-    isGrounded = (intersects.length > 0) ? true : false
-  }
 
 
 const onKeyDown = (event: KeyboardEvent) => {
@@ -216,7 +200,7 @@ document.addEventListener('keyup', onKeyUp, false)
 
 
 function move(delta: number) {
-    checkGrounded()
+    isGrounded = pmove.CheckGrounded(playerBody, meshes)
 
     const lookVector: THREE.Vector3 = controls.getDirection(new THREE.Vector3(0,0,0)).clone()
     const wishDir = new THREE.Vector3(0,0,0)
@@ -260,8 +244,6 @@ function move(delta: number) {
        playerBody.velocity.x = velocity.x
        playerBody.velocity.z = velocity.z
 
-  
-   
 
     playerBody.position.set(
         camera.position.x,
@@ -279,19 +261,16 @@ function animate() {
     move(delta)
     world.step(Math.min(delta, 0.1))
 
-
     player.position.set(
         playerBody.position.x,
         playerBody.position.y,
         playerBody.position.z
     )
-
     camera.position.set(
         playerBody.position.x,
         playerBody.position.y,
         playerBody.position.z
     )
-
     playerBody.quaternion.set(
         player.quaternion.x,
         player.quaternion.y,

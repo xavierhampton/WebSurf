@@ -1,4 +1,5 @@
 import { Vector3 } from "three"
+import * as THREE from "three"
 
 class pMove {
     maxGroundSpeed: number
@@ -15,7 +16,12 @@ class pMove {
         this.airFrictionCoefficient = 0
     }
 
+    Move(delta: number, isGrounded: boolean) {
+        return
+    }
+
     MoveGround(wishDir: Vector3, velocity: Vector3, delta: number) {
+        // Calculate the velocity on the ground
         let velo = velocity.clone()
         this.friction(velo, delta, this.frictionCoefficient)
 
@@ -27,6 +33,7 @@ class pMove {
     }
 
     MoveAir(wishDir: Vector3, velocity: Vector3, delta: number, strafe: boolean) {
+        // Calculate the velocity in the air
         let velo = velocity.clone()
         this.friction(velo, delta, this.airFrictionCoefficient)
 
@@ -40,6 +47,14 @@ class pMove {
         return velo
     }
 
+    CheckGrounded(playerBody: any, meshes: any) {
+        // Create a raycaster to check for ground collision
+        const rayStart = new THREE.Vector3(playerBody.position.x, playerBody.position.y, playerBody.position.z);
+        const rayDirection = new THREE.Vector3(0, -1, 0); // Negative Y direction
+        const raycaster = new THREE.Raycaster(rayStart, rayDirection, 0, 2); // Maximum distance of 2 units
+        const intersects = raycaster.intersectObjects(meshes)
+        return (intersects.length > 0) ? true : false
+      }
 
 
     //Helpers
