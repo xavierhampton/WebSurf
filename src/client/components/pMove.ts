@@ -2,13 +2,15 @@ import { Vector3 } from "three"
 import * as THREE from "three"
 
 class pMove {
+    $: any
     maxGroundSpeed: number
     maxAirSpeed: number 
     maxAcceleration: number
     frictionCoefficient: number
     airFrictionCoefficient: number
 
-    constructor() {
+    constructor($: any) {
+        this.$ = $
         this.maxGroundSpeed = 80
         this.maxAirSpeed = 10
         this.maxAcceleration = 5 * this.maxGroundSpeed
@@ -16,8 +18,32 @@ class pMove {
         this.airFrictionCoefficient = 0
     }
 
-    Move(delta: number, isGrounded: boolean) {
-        return
+    Move(delta: number) {
+    let isGrounded = this.CheckGrounded()
+    const wishDir = this.FindWishDir()
+    const playerBody = this.$['playerBody']
+    const camera = this.$['camera']
+
+    if (this.$['jumping'] && isGrounded) {
+        playerBody.velocity.y = 7
+        isGrounded = false
+    }
+
+       let velocity: THREE.Vector3 = new THREE.Vector3(playerBody.velocity.x, 0, playerBody.velocity.z)
+       if (isGrounded) {
+        velocity = this.MoveGround(wishDir.clone(), velocity, delta)
+       } 
+       else {
+        velocity = this.MoveAir(wishDir.clone(), velocity, delta, this.CheckStrafe())
+       }
+       playerBody.velocity.set(velocity.x, playerBody.velocity.y, velocity.z)
+
+    
+    playerBody.position.set(
+        camera.position.x,
+        camera.position.y,
+        camera.position.z
+    )
     }
 
     MoveGround(wishDir: Vector3, velocity: Vector3, delta: number) {
@@ -47,14 +73,41 @@ class pMove {
         return velo
     }
 
-    CheckGrounded(playerBody: any, meshes: any) {
+    CheckGrounded() {
+        const playerBody = this.$['playerBody']
+        const ground = this.$['ground']
+
         // Create a raycaster to check for ground collision
         const rayStart = new THREE.Vector3(playerBody.position.x, playerBody.position.y, playerBody.position.z);
         const rayDirection = new THREE.Vector3(0, -1, 0); // Negative Y direction
         const raycaster = new THREE.Raycaster(rayStart, rayDirection, 0, 2); // Maximum distance of 2 units
-        const intersects = raycaster.intersectObjects(meshes)
+        const intersects = raycaster.intersectObjects(ground)
         return (intersects.length > 0) ? true : false
       }
+
+    FindWishDir() {
+        const lookVector: THREE.Vector3 = this.$['controls'].getDirection(new THREE.Vector3(0,0,0)).clone()
+        const wishDir = new THREE.Vector3(0,0,0)
+        if (this.$['moveLeft']) {
+            wishDir.add((new THREE.Vector3(0,1,0).cross(lookVector)))
+        }
+        if (this.$['moveRight']) {
+            wishDir.add((lookVector.clone().cross(new THREE.Vector3(0,1,0))))
+        }
+        if (this.$['moveForward']) {
+            wishDir.add(new THREE.Vector3(lookVector.x,0,lookVector.z))
+        }
+        if (this.$['moveBackward']) {
+            wishDir.add(new THREE.Vector3(-lookVector.x,0,-lookVector.z))
+        }
+        wishDir.y = 0
+        wishDir.normalize()
+        return wishDir.clone()
+    }
+
+    CheckStrafe() {
+        return (!this.$['moveForward'] && !this.$['moveBackward'])
+    }
 
 
     //Helpers
