@@ -8,25 +8,18 @@ import SceneBuilder from './components/sceneBuilder';
 import Stats from 'three/examples/jsm/libs/stats.module';
 
 //Initalize Global Variables
-let ground : any = []
 const $ : any = {}
-const clock = new THREE.Clock()
-
-//Initialize Global Objects
-const stats = new Stats()
-const pmove = new pMove($)
-const sceneBuilder = new SceneBuilder($)
 
 //////////////////////////////////
 //Initialize Three.js Scene
-const scene = new THREE.Scene();
+const scene = new THREE.Scene(); $['scene'] = scene
 
 //Initialize Cannon.js World
-const world = new CANNON.World();
+const world = new CANNON.World(); $['world'] = world
 world.gravity.set(0, -20, 0);
 
 //Initialize Renderer
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer(); $['renderer'] = renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true
 
@@ -36,34 +29,31 @@ const camera = new THREE.PerspectiveCamera(
     window.innerWidth / window.innerHeight,
     0.1,
     1000
-)
+); $['camera'] = camera
 camera.position.set(0,2,5)
 
 /////////////////////////////////
 //Initalize Controls
-const controls = new PointerLockControls(camera, renderer.domElement)
+const controls = new PointerLockControls(camera, renderer.domElement); $['controls'] = controls
 controls.pointerSpeed = 0.5
 
-//Player
-const player = new THREE.Mesh(new THREE.BoxGeometry(1,3,1), new THREE.MeshLambertMaterial({color: 0x005555}))
-player.position.y = 2
-player.castShadow = true
-scene.add(player)
+///////////////////
+//Initalize Global Objects
+let ground : any = []; $['ground'] = ground
+const clock = new THREE.Clock()
 
-const playerShape = new CANNON.Box(new CANNON.Vec3(0.5, 1.5, 0.5))
-const playerBody = new CANNON.Body({mass: 12, material: new CANNON.Material({friction: 0})})
-playerBody.addShape(playerShape)
-playerBody.position.set(
-    player.position.x,
-    player.position.y,
-    player.position.z
-)
-world.addBody(playerBody)
+//Initialize Global Objects
+const stats = new Stats()
+const pmove = new pMove($)
+const sceneBuilder = new SceneBuilder($)
 
+//Initalize Player
+initPlayer()
 
 //Insert DOM Elements
 document.body.appendChild(stats.dom)
 document.body.appendChild(renderer.domElement);
+
 ////////////////////////////
 //Generate Scene
 
@@ -71,6 +61,13 @@ sceneBuilder.generatePlane()
 sceneBuilder.generateTestCubes()
 
 ////////////////////////////
+//Initalize Events
+const pevents = new pEvents($)
+//Run Process
+animate();
+
+///////////////////////////////////
+
 function animate() {
     let delta = clock.getDelta()
     stats.update()
@@ -81,17 +78,23 @@ function animate() {
     renderer.render(scene, camera);
 }
 
-//Initalize Global Object
-$['ground'] = ground
-$['playerBody'] = playerBody
-$['camera'] = camera
-$['controls'] = controls
-$['renderer'] = renderer
-$['player'] = player
-$['world'] = world
-$['scene'] = scene
+function initPlayer() {
+    //Player
+    const player = new THREE.Mesh(new THREE.BoxGeometry(1,3,1), new THREE.MeshLambertMaterial({color: 0x005555}))
+    player.position.y = 2
+    player.castShadow = true
+    scene.add(player)
 
-//Initalize Events
-const pevents = new pEvents($)
-//Run Process
-animate();
+    const playerShape = new CANNON.Box(new CANNON.Vec3(0.5, 1.5, 0.5))
+    const playerBody = new CANNON.Body({mass: 12, material: new CANNON.Material({friction: 0})})
+    playerBody.addShape(playerShape)
+    playerBody.position.set(
+        player.position.x,
+        player.position.y,
+        player.position.z
+    )
+    world.addBody(playerBody)
+
+    $['player'] = player
+    $['playerBody'] = playerBody
+}
