@@ -37,13 +37,7 @@ class pMove {
         velocity = this.MoveAir(wishDir.clone(), velocity, delta, this.CheckStrafe())
        }
        playerBody.velocity.set(velocity.x, playerBody.velocity.y, velocity.z)
-
-    
-    playerBody.position.set(
-        camera.position.x,
-        camera.position.y,
-        camera.position.z
-    )
+       this.SyncPlayer()
     }
 
     MoveGround(wishDir: Vector3, velocity: Vector3, delta: number) {
@@ -107,6 +101,34 @@ class pMove {
 
     CheckStrafe() {
         return (!this.$['moveForward'] && !this.$['moveBackward'])
+    }
+
+    SyncPlayer() {
+        const playerBody = this.$['playerBody']
+        const player = this.$['player']
+        const camera = this.$['camera']
+
+        player.position.set(
+            playerBody.position.x,
+            playerBody.position.y,
+            playerBody.position.z
+        )
+        camera.position.set(
+            playerBody.position.x,
+            playerBody.position.y,
+            playerBody.position.z
+        )
+        playerBody.quaternion.set(
+            player.quaternion.x,
+            player.quaternion.y,
+            player.quaternion.z,
+            player.quaternion.w
+        )
+        playerBody.position.set(
+            camera.position.x,
+            camera.position.y,
+            camera.position.z
+        )
     }
 
 
