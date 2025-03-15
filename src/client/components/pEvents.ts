@@ -8,7 +8,6 @@ class pEvents {
 
     init() {
         this.initMovementEvents()
-        
     }
 
     initMovementEvents() {
@@ -37,6 +36,32 @@ class pEvents {
                 case 'Space': this.$['jumping'] = false; break;
             }
         }, false)
+    }
+
+    initBrowserEvents() {
+        const camera = this.$['camera']
+        const renderer = this.$['renderer']
+        const scene = this.$['scene']
+        const controls = this.$['controls']
+
+        //Browser Events
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight)
+            renderer.render(scene, camera);
+        }, false);
+        
+        const menuPanel = document.getElementById("menuPanel") as HTMLDivElement
+        const startButton = document.getElementById("startButton") as HTMLInputElement
+        startButton.addEventListener('click', () => {
+            controls.lock()
+        }, false)
+        
+        controls.addEventListener('change', () => {console.log('controls change')})
+        controls.addEventListener('lock', () => {menuPanel.style.display = 'none'})
+        controls.addEventListener('unlock', () => {menuPanel.style.display = 'block'})
+        
     }
 }
 export default pEvents;
