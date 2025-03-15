@@ -8,6 +8,7 @@ class pEvents {
 
     init() {
         this.initMovementEvents()
+        this.initBrowserEvents()
     }
 
     initMovementEvents() {
@@ -55,13 +56,12 @@ class pEvents {
         const menuPanel = document.getElementById("menuPanel") as HTMLDivElement
         const startButton = document.getElementById("startButton") as HTMLInputElement
         startButton.addEventListener('click', () => {
-            controls.lock()
+            this.$['controls'].lock()
         }, false)
         
-        controls.addEventListener('change', () => {console.log('controls change')})
         controls.addEventListener('lock', () => {menuPanel.style.display = 'none'})
         controls.addEventListener('unlock', () => {menuPanel.style.display = 'block'})
-        
+
     }
 }
 export default pEvents;
