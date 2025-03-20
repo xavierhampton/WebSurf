@@ -110,20 +110,52 @@ class SceneBuilder {
 
     //HELPERS
     /////////////////////////////////////
-    createCube(position : THREE.Vector3, size : THREE.Vector3, cubeTexture: THREE.Texture) {
+    createCube(position : THREE.Vector3, size : THREE.Vector3, texture: THREE.Texture) {
         const scene = this.$['scene']
         const world = this.$['world']
         const ground = this.$['ground']
 
         const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
         const cubeMaterial = new THREE.MeshLambertMaterial({
-            map: cubeTexture
+            map: texture
         });
 
         const cube = new THREE.Mesh(geometry, cubeMaterial);
         cube.position.set(position.x, position.y, position.z)
         cube.castShadow = true
         cube.receiveShadow = true
+       
+
+        ground.push(cube)
+
+        const cubeShape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2))
+        const cubeBody = new CANNON.Body({mass: 0, material: new CANNON.Material({friction: 0})})
+        cubeBody.addShape(cubeShape)
+
+        cubeBody.position.x = cube.position.x
+        cubeBody.position.y = cube.position.y
+        cubeBody.position.z = cube.position.z
+            
+        scene.add(cube)
+        world.addBody(cubeBody)
+    }
+
+    createPlane(position : THREE.Vector3, size : THREE.Vector3, texture: THREE.Texture, angle: number) {
+        const scene = this.$['scene']
+        const world = this.$['world']
+        const ground = this.$['ground']
+
+        const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+        const cubeMaterial = new THREE.MeshLambertMaterial({
+            map: texture
+        });
+
+        const cube = new THREE.Mesh(geometry, cubeMaterial);
+        cube.position.set(position.x, position.y, position.z)
+        cube.castShadow = true
+        cube.receiveShadow = true
+
+        cube.rotateX(angle)
             
         ground.push(cube)
 
@@ -135,7 +167,8 @@ class SceneBuilder {
         cubeBody.position.x = cube.position.x
         cubeBody.position.y = cube.position.y
         cubeBody.position.z = cube.position.z
-            
+
+        cubeBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), angle)
 
         scene.add(cube)
         world.addBody(cubeBody)
