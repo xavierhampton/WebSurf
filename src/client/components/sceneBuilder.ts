@@ -106,19 +106,38 @@ class SceneBuilder {
 
             world.addBody(cubeBody)
         }
+
+        
     }
+    generateNCubes(n : number) { 
+        const COLORS = [0x00ffff, 0xffff00, 0xff00ff, 0x0000ff, 0xff0000]
+        let prevx = 20
+
+        for (let i = 0; i < n; i++) {
+            const size = new THREE.Vector3(
+                Math.max(Math.random() * 5 + 5, 1),
+                1,
+                Math.max(Math.random() * 3 + 5, 1)
+            )
+            const position = new THREE.Vector3(
+                Math.random() * 20 - 10,
+                0,
+                -prevx
+            )
+            prevx += 10
+            this.createCube(position, size, new THREE.MeshLambertMaterial({color: COLORS[Math.floor(Math.random() * COLORS.length)]}))
+        }
+    }
+
 
     //HELPERS
     /////////////////////////////////////
-    createCube(position : THREE.Vector3, size : THREE.Vector3, texture: THREE.Texture) {
+    createCube(position : THREE.Vector3, size : THREE.Vector3, cubeMaterial: THREE.Material) {
         const scene = this.$['scene']
         const world = this.$['world']
         const ground = this.$['ground']
 
         const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
-        const cubeMaterial = new THREE.MeshLambertMaterial({
-            map: texture
-        });
 
         const cube = new THREE.Mesh(geometry, cubeMaterial);
         cube.position.set(position.x, position.y, position.z)
@@ -157,7 +176,6 @@ class SceneBuilder {
 
         cube.rotateX(angle)
             
-        ground.push(cube)
 
 
         const cubeShape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2))
