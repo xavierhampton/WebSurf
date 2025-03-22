@@ -37,6 +37,14 @@ class pMove {
         velocity = this.MoveAir(wishDir.clone(), velocity, delta, this.CheckStrafe())
        }
        playerBody.velocity.set(velocity.x, playerBody.velocity.y, velocity.z)
+       
+       if (this.$['reset']) {
+            playerBody.position.set(0, 2, 0)
+            playerBody.velocity.set(0, 0, 0)
+            camera.position.set(0, 2, 0)
+            camera.quaternion.set(0, 0, 0, 1)
+            playerBody.quaternion.set(0, 0, 0, 1)
+    }
        this.SyncPlayer()
     }
 

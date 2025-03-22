@@ -18,6 +18,7 @@ class pEvents {
         this.$['moveLeft'] = false;
         this.$['moveRight'] = false;
         this.$['jumping'] = false;
+        this.$['reset'] = false;
         
         document.addEventListener('keydown', (event: KeyboardEvent) => {
             switch(event.code) {
@@ -26,6 +27,7 @@ class pEvents {
                 case 'KeyA': this.$['moveLeft'] = true; break;
                 case 'KeyD': this.$['moveRight'] = true; break;
                 case 'Space': this.$['jumping'] = true; break;
+                case 'KeyR': this.$['reset'] = true; break;
             }
         }, false)
         document.addEventListener('keyup', (event: KeyboardEvent) => {
@@ -35,6 +37,7 @@ class pEvents {
                 case 'KeyA': this.$['moveLeft'] = false; break;
                 case 'KeyD': this.$['moveRight'] = false; break;
                 case 'Space': this.$['jumping'] = false; break;
+                case 'KeyR': this.$['reset'] = false; break; 
             }
         }, false)
     }
