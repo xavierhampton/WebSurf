@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>My First ThreeJS Project</title>
+		<style>
+			body {
+				overflow: hidden;
+				margin: 0px;
+				background-color: #fff;
+			}
+			#menuPanel {
+				position: absolute;
+				background-color: rgba(255,255,255,0.5);
+				top: 0px;
+				left: 0px;
+				height: 100%;
+				width: 100%;
+			}
+			#startButton {
+				height: 50px;
+				width: 200px;
+				margin: -25px -100px;
+				position: relative;
+				top: 50%;
+				left: 50%;
+				font-size: 32px;
+			}
+			#crosshair {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				
+				width: 40px;
+				
+				font-size: 16px;
+				text-align: center;
+				transform: translate(-50%, -50%);
+
+				font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+				color:#fff;
+				text-shadow: 0px 0px 2px  #000;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="menuPanel">
+			<button id="startButton">Click to Start</button>
+		</div>
+		<div id="crosshair">+</div>
+		
+
+		<script type="module" src="bundle.js"></script>
+	</body>
+</html>
