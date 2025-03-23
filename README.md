@@ -1,6 +1,11 @@
 # WebSurf
 
 # Karambit Model
--- Author: Diamonddogkz
--- Source: https://sketchfab.com/3d-models/karambit-dfd7606f189a413681305a39b8841ce8
--- License: Creative Commons Attribution 4.0 International
+Model Information:
+* title:	Karambit
+* source:	https://sketchfab.com/3d-models/karambit-dfd7606f189a413681305a39b8841ce8
+* author:	Diamonddogkz (https://sketchfab.com/Diamonddogkz)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
