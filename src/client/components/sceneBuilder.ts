@@ -12,11 +12,14 @@ class SceneBuilder {
         const scene = this.$['scene']
 
         //Set Scene Background
-        const spaceTexture = new THREE.TextureLoader().load('assets/spaceTexture.png')
-        spaceTexture.wrapS = THREE.RepeatWrapping
-        spaceTexture.wrapT = THREE.RepeatWrapping
-        spaceTexture.repeat.set(2,2)
-        scene.background = spaceTexture
+        const loader = new THREE.CubeTextureLoader()
+        const textureCube = loader.load( [
+            'assets/spaceTexture.png', 'assets/spaceTexture.png',
+            'assets/spaceTexture.png', 'assets/spaceTexture.png',
+            'assets/spaceTexture.png', 'assets/spaceTexture.png'
+        ] );        
+ 
+        scene.background = textureCube
     }
 
     generateLighting() {
