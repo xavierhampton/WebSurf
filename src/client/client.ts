@@ -59,7 +59,7 @@ document.body.appendChild(renderer.domElement);
 
 // sceneBuilder.generatePlane()
 sceneBuilder.createCube(new THREE.Vector3(0,-15,0), new THREE.Vector3(30,30,30), new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load('./assets/cookieTexture.png')}))
-sceneBuilder.generateNCubes(10)
+sceneBuilder.generateNCubes(30)
 
 
 // sceneBuilder.createPlane(new THREE.Vector3(70,-10,0), new THREE.Vector3(100,3,30), new THREE.TextureLoader().load('./assets/cookieTexture.png'), -Math.PI / 3)

@@ -120,7 +120,7 @@ class SceneBuilder {
                 Math.max(Math.random() * 3 + 5, 1)
             )
             const position = new THREE.Vector3(
-                Math.random() * 20 - 10,
+                Math.random() * 12 - 6,
                 0,
                 -prevx
             )
