@@ -152,9 +152,6 @@ class pMove {
             karambit.rotateX(-Math.PI / 2)
             karambit.rotateY(Math.PI)
             
-
-          
-            
         }
     }
 
