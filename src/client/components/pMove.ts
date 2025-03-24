@@ -115,6 +115,7 @@ class pMove {
         const playerBody = this.$['playerBody']
         const player = this.$['player']
         const camera = this.$['camera']
+        const karambit = this.$['karambit']
 
         player.position.set(
             playerBody.position.x,
@@ -137,6 +138,24 @@ class pMove {
             camera.position.y,
             camera.position.z
         )
+        if (karambit) {
+            karambit.position.set(
+                camera.position.x, 
+                camera.position.y ,
+                camera.position.z
+            )
+            karambit.rotation.set(camera.rotation.x,camera.rotation.y ,camera.rotation.z)
+            karambit.translateX(0.3)
+            karambit.translateZ(-1)
+            karambit.translateY(-0.5)
+            karambit.rotateZ(-Math.PI / 2)
+            karambit.rotateX(-Math.PI / 2)
+            karambit.rotateY(Math.PI)
+            
+
+          
+            
+        }
     }
 
 
