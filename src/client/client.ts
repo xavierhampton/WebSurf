@@ -4,7 +4,7 @@ import * as CANNON from 'cannon-es'
 
 import pMove from './components/pMove';
 import pEvents from './components/pEvents';
-import SceneBuilder from './components/sceneBuilder';
+import SceneBuilder from './components/helpers/sceneBuilder';
 import Stats from 'three/examples/jsm/libs/stats.module';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
