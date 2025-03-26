@@ -44,6 +44,7 @@ class pMove {
             camera.position.set(0, 2, 0)
             camera.quaternion.set(0, 0, 0, 1)
             playerBody.quaternion.set(0, 0, 0, 1)
+            playerBody.velocity.set(0,0,0)
     }
        this.SyncPlayer()
     }
