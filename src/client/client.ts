@@ -62,7 +62,7 @@ document.body.appendChild(renderer.domElement);
 //Generate Scene
 $['levelSize'] = 50
 
-// sceneBuilder.generatePlane()
+
 sceneBuilder.createCube(new THREE.Vector3(0,-15,0), new THREE.Vector3(30,30,30), new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load('./assets/cookieTexture.png')}))
 
 plevels.generateLevelEasy()
@@ -70,25 +70,6 @@ plevels.generateLevelMedium()
 plevels.generateLevelHard()
 
 
-
-const loader = new GLTFLoader();
-
-loader.load( 'assets/karambit/scene.gltf', function ( gltf : any ) {
-    const model = gltf.scene
-    $['karambit'] = gltf.scene
-    
-    model.scale.set(.002, .002, .002);  
-	scene.add(model);
-
-}, undefined, function ( error: unknown ) {
-
-	console.error( error );
-
-} );
-
-
-// sceneBuilder.createPlane(new THREE.Vector3(70,-10,0), new THREE.Vector3(100,3,30), new THREE.TextureLoader().load('./assets/cookieTexture.png'), -Math.PI / 3)
-// sceneBuilder.createPlane(new THREE.Vector3(70,-10,0), new THREE.Vector3(100,3,30), new THREE.TextureLoader().load('./assets/cookieTexture.png'), Math.PI / 3)
 
 
 ////////////////////////////
