@@ -112,29 +112,7 @@ class SceneBuilder {
 
         
     }
-    generateNCubes(n : number) { 
-        const COLORS = [0xff0000, 0xffa500, 0xffff00, 0x00ff00, 0x0000ff, 0x4b0082, 0x8a2be2]
-        let prevx = 20
-        let j = 0;
-
-        for (let i = 0; i < n; i++) {
-            const size = new THREE.Vector3(
-                Math.max(Math.random() * 5 + 5, 1),
-                1,
-                Math.max(Math.random() * 3 + 5, 1)
-            )
-            const position = new THREE.Vector3(
-                Math.random() * 12 - 6,
-                0,
-                -prevx
-            )
-            prevx += 10
-            this.createCube(position, size, new THREE.MeshLambertMaterial({color: COLORS[j]}))
-            j++;
-            j = j % COLORS.length
-        }
-    }
-
+ 
 
     //HELPERS
     /////////////////////////////////////

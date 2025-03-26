@@ -8,6 +8,7 @@ import SceneBuilder from './components/helpers/sceneBuilder';
 import Stats from 'three/examples/jsm/libs/stats.module';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import pLevels from './components/pLevels';
 
 //Initalize Global Variables
 const $ : any = {}
@@ -48,6 +49,7 @@ const clock = new THREE.Clock()
 const stats = new Stats()
 const pmove = new pMove($)
 const sceneBuilder = new SceneBuilder($)
+const plevels = new pLevels($)
 
 //Initalize Player
 initPlayer()
@@ -58,10 +60,16 @@ document.body.appendChild(renderer.domElement);
 
 ////////////////////////////
 //Generate Scene
+$['levelSize'] = 10
 
 // sceneBuilder.generatePlane()
 sceneBuilder.createCube(new THREE.Vector3(0,-15,0), new THREE.Vector3(30,30,30), new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load('./assets/cookieTexture.png')}))
-sceneBuilder.generateNCubes(30)
+
+plevels.generateLevelEasy()
+plevels.generateLevelMedium()
+plevels.generateLevelHard()
+
+
 
 const loader = new GLTFLoader();
 
