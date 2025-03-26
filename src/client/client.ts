@@ -60,7 +60,7 @@ document.body.appendChild(renderer.domElement);
 
 ////////////////////////////
 //Generate Scene
-$['levelSize'] = 10
+$['levelSize'] = 50
 
 // sceneBuilder.generatePlane()
 sceneBuilder.createCube(new THREE.Vector3(0,-15,0), new THREE.Vector3(30,30,30), new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load('./assets/cookieTexture.png')}))
