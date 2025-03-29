@@ -84,7 +84,5 @@ class pLevels {
                     j = j % COLORS.length
                 }
     }
-
-
 }
 export default pLevels

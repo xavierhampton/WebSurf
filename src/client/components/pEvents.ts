@@ -9,6 +9,7 @@ class pEvents {
     init() {
         this.initMovementEvents()
         this.initBrowserEvents()
+        this.initSoundEvents()
     }
 
     initMovementEvents() {
@@ -65,6 +66,11 @@ class pEvents {
         controls.addEventListener('lock', () => {menuPanel.style.display = 'none'})
         controls.addEventListener('unlock', () => {menuPanel.style.display = 'block'})
 
+    }
+
+    initSoundEvents() {
+        const listener = this.$['audioListener']
+        const loader = this.$['audioLoader']
     }
 }
 export default pEvents;
