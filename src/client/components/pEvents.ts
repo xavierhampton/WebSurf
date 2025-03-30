@@ -78,6 +78,15 @@ class pEvents {
     const audioLoader = new THREE.AudioLoader(); this.$['audioLoader'] = audioLoader
     camera.add(listener)
 
+    // SYNTH CLICK
+    let sound = new THREE.Audio(listener)
+    audioLoader.load('assets/sounds/clickSynth.mp3', function(buffer) {
+        sound.setBuffer(buffer)
+        sound.setLoop(false)
+        sound.setVolume(0.3);
+    })
+    this.$['synthClick'] = sound
+
     }
 }
 export default pEvents;

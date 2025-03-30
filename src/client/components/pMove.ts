@@ -19,34 +19,37 @@ class pMove {
     }
 
     Move(delta: number) {
-    let isGrounded = this.CheckGrounded()
-    const wishDir = this.FindWishDir()
-    const playerBody = this.$['playerBody']
-    const camera = this.$['camera']
+        let isGrounded = this.CheckGrounded()
+        const wishDir = this.FindWishDir()
+        const playerBody = this.$['playerBody']
+        const camera = this.$['camera']
 
-    if (this.$['jumping'] && isGrounded) {
-        playerBody.velocity.y = 7
-        isGrounded = false
-    }
+        if (this.$['jumping'] && isGrounded) {
+            playerBody.velocity.y = 7
+            isGrounded = false
+            if ((this.$['synthClick'] != null)) {this.$['synthClick'].play()}
+        }
 
-       let velocity: THREE.Vector3 = new THREE.Vector3(playerBody.velocity.x, 0, playerBody.velocity.z)
-       if (isGrounded) {
-        velocity = this.MoveGround(wishDir.clone(), velocity, delta)
-       } 
-       else {
-        velocity = this.MoveAir(wishDir.clone(), velocity, delta, this.CheckStrafe())
-       }
-       playerBody.velocity.set(velocity.x, playerBody.velocity.y, velocity.z)
-       
-       if (this.$['reset']) {
+        this.$['isGrounded'] = isGrounded
+
+        let velocity: THREE.Vector3 = new THREE.Vector3(playerBody.velocity.x, 0, playerBody.velocity.z)
+        if (isGrounded) {
+            velocity = this.MoveGround(wishDir.clone(), velocity, delta)
+        } 
+        else {
+            velocity = this.MoveAir(wishDir.clone(), velocity, delta, this.CheckStrafe())
+        }
+        playerBody.velocity.set(velocity.x, playerBody.velocity.y, velocity.z)
+        
+        if (this.$['reset']) {
             playerBody.position.set(0, 2, 0)
             playerBody.velocity.set(0, 0, 0)
             camera.position.set(0, 2, 0)
             camera.quaternion.set(0, 0, 0, 1)
             playerBody.quaternion.set(0, 0, 0, 1)
             playerBody.velocity.set(0,0,0)
-    }
-       this.SyncPlayer()
+        }
+        this.SyncPlayer()
     }
 
     MoveGround(wishDir: Vector3, velocity: Vector3, delta: number) {
