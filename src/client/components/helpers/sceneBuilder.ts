@@ -14,9 +14,9 @@ class SceneBuilder {
         //Set Scene Background
         const loader = new THREE.CubeTextureLoader()
         const textureCube = loader.load( [
-            'assets/spaceTexture.png', 'assets/spaceTexture.png',
-            'assets/spaceTexture.png', 'assets/spaceTexture.png',
-            'assets/spaceTexture.png', 'assets/spaceTexture.png'
+            'assets/images/spaceTexture.png', 'assets/images/spaceTexture.png',
+            'assets/images/spaceTexture.png', 'assets/images/spaceTexture.png',
+            'assets/images/spaceTexture.png', 'assets/images/spaceTexture.png'
         ] );        
  
         scene.background = textureCube
@@ -62,7 +62,7 @@ class SceneBuilder {
         const world = this.$['world']
         const ground = this.$['ground']
 
-        const cubeTexture = new THREE.TextureLoader().load('./assets/cookieTexture.png')
+        const cubeTexture = new THREE.TextureLoader().load('./assets/images/cookieTexture.png')
         const cubeMaterial = new THREE.MeshLambertMaterial({
             map: cubeTexture
         });

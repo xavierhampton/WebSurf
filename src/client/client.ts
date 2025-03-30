@@ -63,7 +63,7 @@ document.body.appendChild(renderer.domElement);
 $['levelSize'] = 50
 
 
-sceneBuilder.createCube(new THREE.Vector3(0,-15,0), new THREE.Vector3(30,30,30), new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load('./assets/cookieTexture.png')}))
+sceneBuilder.createCube(new THREE.Vector3(0,-15,0), new THREE.Vector3(30,30,30), new THREE.MeshLambertMaterial({map: new THREE.TextureLoader().load('./assets/images/cookieTexture.png')}))
 
 plevels.generateLevelEasy()
 plevels.generateLevelMedium()

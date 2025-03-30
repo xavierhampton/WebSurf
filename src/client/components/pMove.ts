@@ -116,7 +116,6 @@ class pMove {
         const playerBody = this.$['playerBody']
         const player = this.$['player']
         const camera = this.$['camera']
-        const karambit = this.$['karambit']
 
         player.position.set(
             playerBody.position.x,
