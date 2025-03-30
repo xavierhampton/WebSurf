@@ -35,11 +35,6 @@ const camera = new THREE.PerspectiveCamera(
 ); $['camera'] = camera
 camera.position.set(0,2,5)
 
-//Initalize Audio Listener and Loader
-const listener = new THREE.AudioListener(); $['audioListener'] = listener
-const audioLoader = new THREE.AudioLoader(); $['audioLoader'] = audioLoader
-camera.add(listener)
-
 /////////////////////////////////
 //Initalize Controls
 const controls = new PointerLockControls(camera, renderer.domElement); $['controls'] = controls
@@ -84,7 +79,7 @@ animate();
 ///////////////////////////////////
 
 function animate() {
-    let delta = clock.getDelta()
+    const delta = clock.getDelta()
     stats.update()
     pmove.Move(delta)
 

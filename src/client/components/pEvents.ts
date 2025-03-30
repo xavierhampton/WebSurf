@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 //Handles the events for the client service
 class pEvents {
     $: any;
@@ -69,8 +71,13 @@ class pEvents {
     }
 
     initSoundEvents() {
-        const listener = this.$['audioListener']
-        const loader = this.$['audioLoader']
+    const camera = this.$['camera']
+        
+    //Initalize Audio Listener and Loader
+    const listener = new THREE.AudioListener(); this.$['audioListener'] = listener
+    const audioLoader = new THREE.AudioLoader(); this.$['audioLoader'] = audioLoader
+    camera.add(listener)
+
     }
 }
 export default pEvents;
