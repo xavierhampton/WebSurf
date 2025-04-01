@@ -8,6 +8,7 @@ import SceneBuilder from './components/helpers/sceneBuilder';
 import Stats from 'three/examples/jsm/libs/stats.module';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import pData from './components/pData';
 import pLevels from './components/pLevels';
 
 //Initalize Global Variables
@@ -53,6 +54,9 @@ const plevels = new pLevels($)
 
 //Initalize Player
 initPlayer()
+
+//Load Player Data
+$['pData'] = new pData($)
 
 //Insert DOM Elements
 document.body.appendChild(stats.dom)
